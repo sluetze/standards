@@ -3,22 +3,15 @@
   hosts: all
   tasks:
     - name: Run compliance script
-      ansible.builtin.shell: |
-        python3 ~/Tests/scs-compliance-check.py ~/Tests/scs-compatible-iaas.yaml -s {{ cloud }} -a os_cloud={{ cloud }} -o {{ cloud }}-iaas.yaml -C
-      register: result
+      ansible.builtin.shell: >
+        python3 ~/Tests/scs-test-runner.py --config ~/Tests/config.toml --debug run --preset {{ preset }} --output report.yaml
       changed_when: true
-      # failed_when: result.rc != 0
-      # ^^^ this task does not fail; the only failure would be if the yaml file didn't get produced,
-      # but then the task "Copy result YAML" would fail anyway
-
-    - ansible.builtin.debug:
-        msg: "{{ result.stdout }} {{ result.stderr }}"
 
     - name: Copy result YAML
       ansible.builtin.synchronize:
-        dest: "{{ zuul.executor.log_root }}/{{ cloud }}-iaas.yaml"
+        dest: "{{ zuul.executor.log_root }}/report.yaml"
         mode: pull
-        src: "{{ cloud }}-iaas.yaml"
+        src: "report.yaml"
         verify_host: true
         owner: no
         group: no
@@ -28,5 +21,5 @@
         data:
           zuul:
             artifacts:
-              - name: "{{ cloud }}-iaas.yaml"
-                url: "{{ cloud }}-iaas.yaml"
+              - name: "report.yaml"
+                url: "report.yaml"

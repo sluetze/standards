@@ -1,9 +1,9 @@
-name: "Compliance IaaS v2 of pco-prod2"
+name: "Compliance IaaS v4 of poc-kdo"
 
 on:
-  # Trigger compliance check every day at 4:30 UTC
+  # Trigger compliance check every day at 4:22 UTC
   schedule:
-    - cron:  '30 4 * * *'
+    - cron:  '22 4 * * *'
   # Trigger compliance check after Docker image has been built
   workflow_run:
     workflows: [Build and publish scs-compliance-check Docker image]
@@ -11,13 +11,13 @@ on:
       - completed
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
 jobs:
-  check-pco-prod2:
-    uses: ./.github/workflows/scs-compliance-check.yml
+  check-poc-kdo:
+    uses: ./.github/workflows/scs-compliance-check-with-application-credential.yml
     with:
-      version: v2
+      version: v4
       layer: iaas
-      cloud: "pco-prod2"
-      secret_name: "OS_PASSWORD_PCOPROD2"
+      cloud: "poc-kdo"
+      secret_name: "OS_PASSWORD_POC_KDO"
     secrets: inherit

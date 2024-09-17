@@ -1,9 +1,9 @@
-name: "Compliance IaaS v2 of regio-a"
+name: "Compliance IaaS v3 of syseleven dus2 region"
 
 on:
-  # Trigger compliance check every day at 4:30 UTC
+  # Trigger compliance check every day at 4:08 UTC
   schedule:
-    - cron:  '30 4 * * *'
+    - cron:  '08 4 * * *'
   # Trigger compliance check after Docker image has been built
   workflow_run:
     workflows: [Build and publish scs-compliance-check Docker image]
@@ -13,11 +13,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-regio-a:
+  check-syseleven-dus2:
     uses: ./.github/workflows/scs-compliance-check-with-application-credential.yml
     with:
-      version: v2
+      version: v3
       layer: iaas
-      cloud: "regio-a"
-      secret_name: "OS_PASSWORD_REGIO_A"
+      cloud: "syseleven-dus2"
+      secret_name: "OS_PASSWORD_SYSELEVEN_DUS2"
     secrets: inherit

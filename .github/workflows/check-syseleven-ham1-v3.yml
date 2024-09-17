@@ -1,9 +1,9 @@
-name: "Compliance IaaS v2 of pco-prod3"
+name: "Compliance IaaS v3 of syseleven ham1 region"
 
 on:
-  # Trigger compliance check every day at 4:30 UTC
+  # Trigger compliance check every day at 4:09 UTC
   schedule:
-    - cron:  '30 4 * * *'
+    - cron:  '09 4 * * *'
   # Trigger compliance check after Docker image has been built
   workflow_run:
     workflows: [Build and publish scs-compliance-check Docker image]
@@ -13,11 +13,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-pco-prod3:
+  check-syseleven-ham1:
     uses: ./.github/workflows/scs-compliance-check-with-application-credential.yml
     with:
-      version: v2
+      version: v3
       layer: iaas
-      cloud: "pco-prod3"
-      secret_name: "OS_PASSWORD_PCOPROD3"
+      cloud: "syseleven-ham1"
+      secret_name: "OS_PASSWORD_SYSELEVEN_HAM1"
     secrets: inherit
